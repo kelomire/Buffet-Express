@@ -112,3 +112,57 @@ Personal -- UC_Estado
 ```
 
 El diagrama puede renderizarse con PlantUML. La tarjeta queda especificada para crearla en GitHub Projects o Trello; no se publicó un Issue remoto porque no hay una cuenta conectada en este workspace.# Buffet-Express
+
+## Punto de partida: reflexión sobre el problema
+
+Respuestas modelo para adaptar a la experiencia y los datos reales de cada estudiante y escuela.
+
+### 1. Experiencia con las filas
+
+**Modelo para personalizar:** “Sí, alguna vez tuve que renunciar a comprar porque la fila avanzaba muy lentamente y el recreo estaba por terminar. Eso me hizo perder la posibilidad de comprar algo y volver a clase a tiempo.” Si no te ocurrió, puedes responder: “No tuve que renunciar, pero vi que la fila era larga y que algunos compañeros no llegaban a comprar antes del timbre.”
+
+### 2. Uso de la aplicación y recargo
+
+**Respuesta modelo:** “Sí, probaría una aplicación que me permitiera pedir antes y retirar sin hacer la fila, siempre que el pedido estuviera listo en el horario elegido. Estaría dispuesto/a a pagar $500 ARS adicionales si el ahorro de tiempo y la entrega puntual justifican ese costo. Antes de implementarlo, convendría consultarlo mediante una encuesta para saber cuántos estudiantes aceptarían el recargo.”
+
+### 3. Costo de perder clientes
+
+Cada estudiante que no llega a comprar representa una venta potencial perdida. Para estimar el efecto económico se debe usar el margen de contribución por pedido, no asumir que todo el precio de venta es ganancia:
+
+`Margen por pedido = precio de venta - costo variable del pedido`
+
+`Margen mensual perdido = estudiantes que no compran por recreo × recreos del mes × margen por pedido`
+
+El resultado depende de contar cuántos estudiantes abandonan la fila, de los productos que habrían comprado y de sus costos variables. El buffet puede relevar esos datos antes de proyectar ingresos.
+
+### 4. PoC, MVP y aplicación completa
+
+| Concepto | Objetivo | Alcance | Audiencia |
+|---|---|---|---|
+| **PoC** | Validar una factibilidad técnica u operativa concreta. | Prueba reducida, como enviar un pedido JSON y recibir un código de retiro. | Equipo del proyecto y responsables de evaluar la viabilidad. |
+| **MVP** | Comprobar con usuarios reales si la solución central aporta valor. | Funciones indispensables: consultar menú, confirmar pedido y retirar con código. | Estudiantes y personal del buffet. |
+| **Aplicación completa** | Ampliar el valor y atender una operación consolidada. | Incluye mejoras y funciones secundarias, escalabilidad e integraciones. | Comunidad de usuarios y operación del buffet a mayor escala. |
+
+La PoC reduce el riesgo de invertir en una solución mayor antes de comprobar que la comunicación cliente-servidor funciona. No demuestra por sí sola que exista demanda ni que el negocio sea rentable; esas hipótesis requieren pruebas con usuarios y análisis económico.
+
+### 6. Ventajas de trabajar en Sprints
+
+Los Sprints dividen el trabajo en períodos breves con un objetivo claro. Permiten priorizar lo más importante, mostrar avances, recibir comentarios frecuentes y corregir errores temprano. También hacen visible quién está trabajando en cada tarea y reducen el riesgo de descubrir problemas recién al final del proyecto.
+
+### 7. Planteo inicial del microemprendimiento
+
+**Idea:** ofrecer pedidos anticipados para el buffet escolar, con selección de productos y recreo de retiro, para ordenar la preparación y reducir el tiempo de espera.
+
+**Misión:** facilitar el acceso de los estudiantes a los productos del buffet durante los recreos mediante pedidos anticipados, y ayudar al personal a organizar la preparación y entrega.
+
+**Objetivo general:** validar si un sistema sencillo de pedidos anticipados puede mejorar la experiencia de compra y la organización del buffet.
+
+**Objetivos iniciales:** relevar hábitos y demanda con una encuesta; probar el envío de pedidos con la PoC; definir las funciones del MVP; y medir pedidos entregados a tiempo, adopción y satisfacción.
+
+**Ubicación:** operación física en el buffet de la escuela y acceso digital desde los teléfonos de los estudiantes, sujeto a las reglas de uso de dispositivos y conectividad de la institución.
+
+**Organización preliminar:** el concesionario administra menú, stock y preparación; el Product Owner prioriza necesidades; el Scrum Master facilita el proceso de trabajo; y el equipo de desarrollo diseña, implementa y prueba la solución. Estudiantes y personal del buffet participan como usuarios de validación.
+
+**Puntos a favor:** problema frecuente y observable, usuarios concentrados en la escuela, posibilidad de validar con una PoC de bajo costo y beneficio potencial para estudiantes y buffet.
+
+**Desafíos por validar:** acceso a Internet y dispositivos, aceptación del pedido anticipado, capacidad de preparación antes del recreo, coordinación de pagos y retiros, protección de datos y autorización de la institución.
