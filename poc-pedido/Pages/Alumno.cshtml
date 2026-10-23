@@ -1,0 +1,81 @@
+@page
+@model PoC.Pages.AlumnoModel
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buffet Express | Alumno</title>
+<link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<main class="contenedor">
+<header><h1>Buffet Express</h1><p>Pedí tu comida para el recreo</p></header>
+<section class="panel">
+<h2>Datos del alumno</h2>
+<form id="formPedido">
+<label>Nombre y apellido<input id="nombre" required maxlength="100"></label>
+<label>Curso<input id="curso" required maxlength="50" placeholder="5° 7°"></label>
+<label>Recreo<select id="recreo" required><option value="">Elegir recreo</option><option>Recreo 1</option><option>Recreo 2</option><option>Recreo 3</option></select></label>
+<h2>Menú</h2>
+<div id="menu">Cargando menú...</div>
+<button type="submit">Confirmar pedido</button>
+</form>
+<div id="resultado" role="status"></div>
+<p><a href="/Buffet">Panel del buffet</a></p>
+</section>
+</main>
+<script>
+const menu = document.getElementById('menu');
+const resultado = document.getElementById('resultado');
+
+async function cargarMenu() {
+  const r = await fetch('/api/menu');
+  const productos = await r.json();
+  menu.innerHTML = '';
+  for (const p of productos) {
+    const fila = document.createElement('label');
+    fila.className = 'producto';
+    fila.innerHTML = `<span>${p.nombre} — $${p.precio} (stock: ${p.stock})</span>`;
+    const cantidad = document.createElement('input');
+    cantidad.type = 'number';
+    cantidad.min = '0';
+    cantidad.max = '20';
+    cantidad.value = '0';
+    cantidad.dataset.id = p.id;
+    cantidad.setAttribute('aria-label', 'Cantidad de ' + p.nombre);
+    fila.appendChild(cantidad);
+    menu.appendChild(fila);
+  }
+}
+
+document.getElementById('formPedido').addEventListener('submit', async e => {
+  e.preventDefault();
+  resultado.textContent = 'Enviando pedido...';
+  const items = [...menu.querySelectorAll('input[type=number]')]
+    .map(x => ({ productoId: Number(x.dataset.id), cantidad: Number(x.value) }))
+    .filter(x => x.cantidad > 0);
+  try {
+    const r = await fetch('/api/pedidos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombreAlumno: document.getElementById('nombre').value,
+        curso: document.getElementById('curso').value,
+        recreo: document.getElementById('recreo').value,
+        items
+      })
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.mensaje || 'No se pudo crear el pedido.');
+    resultado.textContent = `Pedido confirmado: ${data.codigo}. Total: $${data.total}. Estado: ${data.estado}.`;
+    e.target.reset();
+    await cargarMenu();
+  } catch (err) {
+    resultado.textContent = err.message;
+  }
+});
+cargarMenu().catch(() => menu.textContent = 'No se pudo cargar el menú.');
+</script>
+</body>
+</html>

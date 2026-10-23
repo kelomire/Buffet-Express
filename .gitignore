@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+**/appsettings.Development.json
+.env
+.env.*
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

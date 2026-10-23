@@ -1,0 +1,19 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #f2f5f9; color: #202938; font-family: system-ui, sans-serif; }
+.contenedor { max-width: 850px; margin: 32px auto; padding: 0 16px; }
+header { background: #173b67; color: white; padding: 24px; border-radius: 14px; margin-bottom: 20px; }
+header h1 { margin: 0 0 8px; }
+header p { margin: 0; }
+.panel, .pedido { background: white; border-radius: 14px; padding: 22px; margin-bottom: 18px; box-shadow: 0 3px 12px #0000000d; }
+label { display: block; margin: 14px 0; font-weight: 600; }
+input, select { display: block; width: 100%; padding: 11px; margin-top: 6px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
+.producto { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
+.producto input { width: 90px; flex-shrink: 0; }
+button { background: #176b45; color: white; border: 0; border-radius: 8px; padding: 12px 16px; cursor: pointer; font: inherit; font-weight: 700; margin: 8px 8px 8px 0; }
+button:hover { filter: brightness(.92); }
+a { color: #175da8; }
+#resultado { margin-top: 18px; font-weight: 700; overflow-wrap: anywhere; }
+.acciones { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+.pedido { border-left: 5px solid #176b45; }
+.pedido h2 { margin-top: 0; }
+@media (max-width: 500px) { .producto { align-items: flex-start; } .producto input { width: 72px; } }

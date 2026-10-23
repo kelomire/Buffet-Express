@@ -1,0 +1,78 @@
+@page
+@model PoC.Pages.BuffetModel
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buffet Express | Cocina</title>
+<link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<main class="contenedor">
+<header><h1>Panel del buffet</h1><p>Administración de pedidos</p></header>
+<section class="panel">
+<div class="acciones"><button id="actualizar">Actualizar pedidos</button><a href="/Alumno">Vista del alumno</a></div>
+<div id="pedidos">Cargando pedidos...</div>
+</section>
+</main>
+<script>
+const contenedor = document.getElementById('pedidos');
+const estados = ['Pendiente','EnPreparacion','ListoParaRetirar','Entregado','Cancelado'];
+
+async function cargar() {
+  const r = await fetch('/api/cocina/pedidos');
+  const pedidos = await r.json();
+  contenedor.replaceChildren();
+  if (!pedidos.length) {
+    contenedor.textContent = 'Todavía no hay pedidos.';
+    return;
+  }
+  for (const p of pedidos) {
+    const tarjeta = document.createElement('article');
+    tarjeta.className = 'pedido';
+    const titulo = document.createElement('h2');
+    titulo.textContent = `${p.codigo} — ${p.nombreAlumno}`;
+    tarjeta.appendChild(titulo);
+    const detalle = document.createElement('p');
+    detalle.textContent = `${p.curso} · ${p.recreo} · ${p.estado} · Total: $${p.total}`;
+    tarjeta.appendChild(detalle);
+    const lista = document.createElement('ul');
+    for (const i of p.items) {
+      const li = document.createElement('li');
+      li.textContent = `${i.producto?.nombre ?? 'Producto'} × ${i.cantidad}`;
+      lista.appendChild(li);
+    }
+    tarjeta.appendChild(lista);
+    const select = document.createElement('select');
+    for (const estado of estados) {
+      const option = document.createElement('option');
+      option.value = estado;
+      option.textContent = estado;
+      option.selected = estado === p.estado;
+      select.appendChild(option);
+    }
+    const boton = document.createElement('button');
+    boton.textContent = 'Guardar estado';
+    boton.addEventListener('click', async () => {
+      const respuesta = await fetch(`/api/pedidos/${p.id}/estado`, {
+        method: 'PATCH',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({estado: select.value})
+      });
+      if (!respuesta.ok) {
+        alert('No se pudo actualizar el estado.');
+        return;
+      }
+      await cargar();
+    });
+    tarjeta.append(select, boton);
+    contenedor.appendChild(tarjeta);
+  }
+}
+document.getElementById('actualizar').addEventListener('click', cargar);
+cargar().catch(() => contenedor.textContent = 'Error al cargar los pedidos.');
+setInterval(() => cargar().catch(() => {}), 10000);
+</script>
+</body>
+</html>
